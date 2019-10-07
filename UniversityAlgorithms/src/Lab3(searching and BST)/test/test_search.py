@@ -3,7 +3,7 @@ import unittest
 from searching import linear_search, binary_search, interpolation_search
 
 
-class SearchSort(unittest.TestCase):
+class TestSearch(unittest.TestCase):
 
     def test_search(self):
         array = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
