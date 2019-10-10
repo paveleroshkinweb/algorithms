@@ -72,5 +72,6 @@ class TestBST(unittest.TestCase):
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
         self.assertEqual(4, bst.height_tree())
 
+
 if __name__ == 'main':
     unittest.main()

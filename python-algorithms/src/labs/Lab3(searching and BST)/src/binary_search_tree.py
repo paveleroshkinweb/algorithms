@@ -94,3 +94,9 @@ class BinarySearchTree:
             return 1 + max(height_tree_helper(node.left), height_tree_helper(node.right))
 
         return height_tree_helper(self.root)
+
+
+if __name__ == '__main__':
+    bst = BinarySearchTree()
+    bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
+    print(bst.height_tree())
