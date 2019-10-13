@@ -61,10 +61,9 @@ class TestBST(unittest.TestCase):
     def test_min(self):
         bst = BinarySearchTree()
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
-        self.assertEqual(7, bst.min(3))
+        self.assertEqual(9, bst.min(3))
         self.assertEqual(8, bst.min(2))
-        self.assertEqual(9, bst.min(1))
-        self.assertEqual(12, bst.min(0))
+        self.assertEqual(7, bst.min(1))
         self.assertEqual(None, bst.min(10))
 
     def test_height_tree(self):

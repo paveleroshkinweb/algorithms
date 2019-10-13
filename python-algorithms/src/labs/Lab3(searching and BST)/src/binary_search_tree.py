@@ -74,17 +74,23 @@ class BinarySearchTree:
         return find_helper(self.root)
 
     def min(self, k):
+        index = k
 
-        def min_helper(node, index):
+        def min_helper(node):
+            nonlocal index
             if node is None:
                 return None
-            elif index == k:
+            left_res = min_helper(node.left)
+            if left_res is not None:
+                return left_res
+            index -= 1
+            if index == 0:
                 return node.value
-            else:
-                index += 1
-                return min_helper(node.left, index)
+            right_res = min_helper(node.right)
+            if right_res is not None:
+                return right_res
 
-        return min_helper(self.root, 0)
+        return min_helper(self.root)
 
     def height_tree(self):
 
@@ -95,8 +101,30 @@ class BinarySearchTree:
 
         return height_tree_helper(self.root)
 
+    def left_rotation(self):
+        if self.root is None or self.root.right is None:
+            return
+        old_root = self.root
+        self.root = old_root.right
+        old_root.right = self.root.left
+        self.root.left = old_root
 
-if __name__ == '__main__':
-    bst = BinarySearchTree()
-    bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
-    print(bst.height_tree())
+    def right_rotation(self):
+        if self.root is None or self.root.left is None:
+            return
+        old_root = self.root
+        self.root = old_root.left
+        old_root.left = self.root.right
+        self.root.right = old_root
+
+    def __str__(self):
+        if self.root is None:
+            return '[]'
+        queue = [self.root]
+        result = []
+        while len(queue) > 0:
+            current_node = queue.pop(0)
+            if current_node is not None:
+                result.append(str(current_node))
+                queue.extend([current_node.left, current_node.right])
+        return str(result)
