@@ -93,24 +93,20 @@ class BinarySearchTree:
 
         return find_parent_helper(self.root)
 
-    def min(self, k):
-        index = k
-
-        def min_helper(node):
-            nonlocal index
-            if node is None:
-                return None
-            left_res = min_helper(node.left)
-            if left_res is not None:
-                return left_res
-            index -= 1
-            if index == 0:
-                return node.value
-            right_res = min_helper(node.right)
-            if right_res is not None:
-                return right_res
-
-        return min_helper(self.root)
+    def min(self, index):
+        stack = []
+        current = self.root
+        while len(stack) > 0 or current is not None:
+            if current is not None:
+                stack.append(current)
+                current = current.left
+            else:
+                current = stack.pop()
+                index -= 1
+                if index == 0:
+                    return current.value
+                current = current.right
+        return None
 
     def height_tree(self):
 
@@ -161,6 +157,7 @@ class BinarySearchTree:
                     current_node = node
                 else:
                     current_node = current_node.right
+
         create_backbone()
 
     def __str__(self):
