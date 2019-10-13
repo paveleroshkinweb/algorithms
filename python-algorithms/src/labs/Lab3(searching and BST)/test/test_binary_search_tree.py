@@ -71,6 +71,14 @@ class TestBST(unittest.TestCase):
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
         self.assertEqual(4, bst.height_tree())
 
+    def test_find_parent(self):
+        bst = BinarySearchTree()
+        bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
+        self.assertEqual(None, bst.find_parent(12))
+        self.assertEqual(12, bst.find_parent(9).value)
+        self.assertEqual(12, bst.find_parent(14).value)
+        self.assertEqual(9, bst.find_parent(8).value)
+
 
 if __name__ == 'main':
     unittest.main()

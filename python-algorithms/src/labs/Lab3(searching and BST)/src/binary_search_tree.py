@@ -73,6 +73,26 @@ class BinarySearchTree:
 
         return find_helper(self.root)
 
+    def find_parent(self, value):
+        if self.root is None or self.root.value == value:
+            return None
+
+        def find_parent_helper(node):
+            if node is None:
+                return None
+            elif value < node.value:
+                if node.left and node.left.value == value:
+                    return node
+                else:
+                    return find_parent_helper(node.left)
+            else:
+                if node.right and node.right.value == value:
+                    return node
+                else:
+                    return find_parent_helper(node.right)
+
+        return find_parent_helper(self.root)
+
     def min(self, k):
         index = k
 
@@ -101,21 +121,47 @@ class BinarySearchTree:
 
         return height_tree_helper(self.root)
 
-    def left_rotation(self):
-        if self.root is None or self.root.right is None:
+    def left_rotation(self, root_value):
+        node = self.find(root_value)
+        node_parent = self.find_parent(root_value)
+        if node is None or node.right is None:
             return
-        old_root = self.root
-        self.root = old_root.right
-        old_root.right = self.root.left
-        self.root.left = old_root
+        old_sub_root = node
+        node = old_sub_root.right
+        old_sub_root.right = node.left
+        node.left = old_sub_root
+        if node_parent is None:
+            self.root = node
+        else:
+            node_parent.left = node
+        return node
 
-    def right_rotation(self):
-        if self.root is None or self.root.left is None:
+    def right_rotation(self, root_value):
+        node = self.find(root_value)
+        node_parent = self.find_parent(root_value)
+        if node is None or node.left is None:
             return
-        old_root = self.root
-        self.root = old_root.left
-        old_root.left = self.root.right
-        self.root.right = old_root
+        old_sub_root = node
+        node = old_sub_root.left
+        old_sub_root.left = node.right
+        node.right = old_sub_root
+        if node_parent is None:
+            self.root = node
+        else:
+            node_parent.right = node
+        return node
+
+    def dsw_balance(self):
+
+        def create_backbone():
+            current_node = self.root
+            while current_node is not None:
+                if current_node.left is not None:
+                    node = self.right_rotation(current_node.value)
+                    current_node = node
+                else:
+                    current_node = current_node.right
+        create_backbone()
 
     def __str__(self):
         if self.root is None:
