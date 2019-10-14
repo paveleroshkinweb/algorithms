@@ -5,10 +5,12 @@ class BinarySearchTree:
 
     def __init__(self):
         self.root = None
+        self.size = 0
 
     def insert(self, value):
         if self.root is None:
             self.root = Node(value)
+            self.size += 1
             return
 
         def insert_helper(node):
@@ -17,11 +19,13 @@ class BinarySearchTree:
             elif value < node.value:
                 if node.left is None:
                     node.left = Node(value)
+                    self.size += 1
                 else:
                     insert_helper(node.left)
             else:
                 if node.right is None:
                     node.right = Node(value)
+                    self.size += 1
                 else:
                     insert_helper(node.right)
 
@@ -158,7 +162,19 @@ class BinarySearchTree:
                 else:
                     current_node = current_node.right
 
+        def balance_backbone():
+            leaves = get_bottom_expected_nodes()
+
+        def get_bottom_expected_nodes():
+            count = 0
+            for i in range(0, self.height_tree()):
+                count += 2**i
+            return self.size - count
+
         create_backbone()
+        balance_backbone()
+
+
 
     def __str__(self):
         if self.root is None:
@@ -171,3 +187,5 @@ class BinarySearchTree:
                 result.append(str(current_node))
                 queue.extend([current_node.left, current_node.right])
         return str(result)
+
+
