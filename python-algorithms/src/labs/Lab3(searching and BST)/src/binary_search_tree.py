@@ -174,7 +174,3 @@ class BinarySearchTree:
                 result.append(str(current_node))
                 queue.extend([current_node.left, current_node.right])
         return str(result)
-
-
-
-
