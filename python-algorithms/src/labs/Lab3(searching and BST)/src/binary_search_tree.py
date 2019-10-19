@@ -1,6 +1,7 @@
 from node import Node
 from math import ceil
 
+
 class BinarySearchTree:
 
     def __init__(self):
@@ -63,23 +64,17 @@ class BinarySearchTree:
 
     def find_node_with_parent(self, value):
 
-        def find_node_with_parent_helper(node):
+        def find_node_with_parent_helper(node, parent):
             if node is None:
                 return [None, None]
             elif node.value == value:
-                return [node, None]
-            elif node.value > value:
-                if node.left is not None and node.left.value == value:
-                    return [node.left, node]
-                else:
-                    return find_node_with_parent_helper(node.left)
+                return [node, parent]
             else:
-                if node.right is not None and node.right.value == value:
-                    return [node.right, node]
-                else:
-                    return find_node_with_parent_helper(node.right)
+                parent = node
+                node = node.left if node.value > value else node.right
+                return find_node_with_parent_helper(node, parent)
 
-        return find_node_with_parent_helper(self.root)
+        return find_node_with_parent_helper(self.root, None)
 
     def min(self, index, node):
         stack = []
