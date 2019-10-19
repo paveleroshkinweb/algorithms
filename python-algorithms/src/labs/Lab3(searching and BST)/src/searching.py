@@ -5,11 +5,11 @@ def linear_search(array, element):
     return -1
 
 
-def search(array, element, getMid):
+def search(array, element, get_mid):
     left = 0
     right = len(array) - 1
     while left <= right:
-        mid = getMid(left, right)
+        mid = get_mid(left, right)
         if mid >= len(array):
             return -1
         elif array[mid] == element:

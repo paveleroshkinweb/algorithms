@@ -52,32 +52,29 @@ class TestBST(unittest.TestCase):
     def test_find(self):
         bst = BinarySearchTree()
         bst.multiple_insert([2, 1, 3, 4])
-        self.assertEqual(None, bst.find(6))
-        self.assertEqual(2, bst.find(2).value)
-        self.assertEqual(1, bst.find(1).value)
-        self.assertEqual(3, bst.find(3).value)
-        self.assertEqual(4, bst.find(4).value)
+        self.assertEqual([None, None], bst.find_node_with_parent(6))
+        arr1 = bst.find_node_with_parent(2)
+        self.assertEqual(2, arr1[0].value)
+        self.assertEqual(None, arr1[1])
+        arr2 = bst.find_node_with_parent(1)
+        self.assertEqual(1, arr2[0].value)
+        self.assertEqual(2, arr2[1].value)
+        arr3 = bst.find_node_with_parent(4)
+        self.assertEqual(4, arr3[0].value)
+        self.assertEqual(3, arr3[1].value)
 
     def test_min(self):
         bst = BinarySearchTree()
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
-        self.assertEqual(9, bst.min(3))
-        self.assertEqual(8, bst.min(2))
-        self.assertEqual(7, bst.min(1))
+        self.assertEqual(9, bst.min(3).value)
+        self.assertEqual(8, bst.min(2).value)
+        self.assertEqual(7, bst.min(1).value)
         self.assertEqual(None, bst.min(10))
 
     def test_height_tree(self):
         bst = BinarySearchTree()
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
         self.assertEqual(4, bst.height_tree())
-
-    def test_find_parent(self):
-        bst = BinarySearchTree()
-        bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
-        self.assertEqual(None, bst.find_parent(12))
-        self.assertEqual(12, bst.find_parent(9).value)
-        self.assertEqual(12, bst.find_parent(14).value)
-        self.assertEqual(9, bst.find_parent(8).value)
 
 
 if __name__ == 'main':

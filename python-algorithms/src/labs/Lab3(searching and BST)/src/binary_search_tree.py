@@ -1,16 +1,13 @@
 from node import Node
 
-
 class BinarySearchTree:
 
     def __init__(self):
         self.root = None
-        self.size = 0
 
     def insert(self, value):
         if self.root is None:
             self.root = Node(value)
-            self.size += 1
             return
 
         def insert_helper(node):
@@ -19,13 +16,11 @@ class BinarySearchTree:
             elif value < node.value:
                 if node.left is None:
                     node.left = Node(value)
-                    self.size += 1
                 else:
                     insert_helper(node.left)
             else:
                 if node.right is None:
                     node.right = Node(value)
-                    self.size += 1
                 else:
                     insert_helper(node.right)
 
@@ -65,37 +60,25 @@ class BinarySearchTree:
 
         return bypass_post_order_helper(self.root)
 
-    def find(self, value):
+    def find_node_with_parent(self, value):
 
-        def find_helper(node):
-            if node is None or node.value == value:
-                return node
-            elif node.value > value:
-                return find_helper(node.left)
-            else:
-                return find_helper(node.right)
-
-        return find_helper(self.root)
-
-    def find_parent(self, value):
-        if self.root is None or self.root.value == value:
-            return None
-
-        def find_parent_helper(node):
+        def find_node_with_parent_helper(node):
             if node is None:
-                return None
-            elif value < node.value:
-                if node.left and node.left.value == value:
-                    return node
+                return [None, None]
+            elif node.value == value:
+                return [node, None]
+            elif node.value > value:
+                if node.left is not None and node.left.value == value:
+                    return [node.left, node]
                 else:
-                    return find_parent_helper(node.left)
+                    return find_node_with_parent_helper(node.left)
             else:
-                if node.right and node.right.value == value:
-                    return node
+                if node.right is not None and node.right.value == value:
+                    return [node.right, node]
                 else:
-                    return find_parent_helper(node.right)
+                    return find_node_with_parent_helper(node.right)
 
-        return find_parent_helper(self.root)
+        return find_node_with_parent_helper(self.root)
 
     def min(self, index):
         stack = []
@@ -108,7 +91,7 @@ class BinarySearchTree:
                 current = stack.pop()
                 index -= 1
                 if index == 0:
-                    return current.value
+                    return current
                 current = current.right
         return None
 
@@ -122,8 +105,7 @@ class BinarySearchTree:
         return height_tree_helper(self.root)
 
     def left_rotation(self, root_value):
-        node = self.find(root_value)
-        node_parent = self.find_parent(root_value)
+        node, node_parent = self.find_node_with_parent(root_value)
         if node is None or node.right is None:
             return
         old_sub_root = node
@@ -133,12 +115,11 @@ class BinarySearchTree:
         if node_parent is None:
             self.root = node
         else:
-            node_parent.left = node
+            node_parent.right = node
         return node
 
     def right_rotation(self, root_value):
-        node = self.find(root_value)
-        node_parent = self.find_parent(root_value)
+        node, node_parent = self.find_node_with_parent(root_value)
         if node is None or node.left is None:
             return
         old_sub_root = node
@@ -148,33 +129,32 @@ class BinarySearchTree:
         if node_parent is None:
             self.root = node
         else:
-            node_parent.right = node
+            node_parent.left = node
         return node
 
-    def dsw_balance(self):
+    def place_in_root(self, value, root):
+        if root is None or root.has_no_child():
+            return
+        node, parent = self.find_node_with_parent(value)
+        while not node.has_direct_child(root):
+            rotate = self.right_rotation if node.value < parent.value else self.left_rotation
+            node = rotate(parent.value)
+            node, parent = self.find_node_with_parent(node.value)
+            print(node, parent)
+        return node
 
-        def create_backbone():
-            current_node = self.root
-            while current_node is not None:
-                if current_node.left is not None:
-                    node = self.right_rotation(current_node.value)
-                    current_node = node
-                else:
-                    current_node = current_node.right
+    def balance(self):
 
-        def balance_backbone():
-            leaves = get_bottom_expected_nodes()
+        def balance_helper(node):
+            if node is None:
+                return
+            min_index = int(node.count_childs() / 2)
+            min_value = self.min(min_index).value
+            new_subtree_root = self.place_in_root(min_value, node)
+            balance_helper(new_subtree_root.left)
+            balance_helper(new_subtree_root.right)
 
-        def get_bottom_expected_nodes():
-            count = 0
-            for i in range(0, self.height_tree()):
-                count += 2**i
-            return self.size - count
-
-        create_backbone()
-        balance_backbone()
-
-
+        balance_helper(self.root)
 
     def __str__(self):
         if self.root is None:
@@ -187,5 +167,3 @@ class BinarySearchTree:
                 result.append(str(current_node))
                 queue.extend([current_node.left, current_node.right])
         return str(result)
-
-
