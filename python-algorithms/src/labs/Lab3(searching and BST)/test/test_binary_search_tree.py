@@ -74,13 +74,35 @@ class TestBST(unittest.TestCase):
     def test_height_tree(self):
         bst = BinarySearchTree()
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
-        self.assertEqual(4, bst.height_tree())
+        self.assertEqual(4, bst.height_tree(bst.root))
 
     def test_balance(self):
         bst1 = BinarySearchTree()
         bst1.multiple_insert([1, 2, 3, 4, 5, 6, 7, 8])
         bst1.balance()
         self.assertEqual(True, bst1.is_balanced())
+        bst2 = BinarySearchTree()
+        bst2.multiple_insert([8, 7, 6, 5, 4, 3, 2, 1])
+        bst2.balance()
+        self.assertEqual(True, bst2.is_balanced())
+
+    def test_remove(self):
+        bst = BinarySearchTree()
+        bst.multiple_insert([6, 4, 5, 3, 2, 11])
+        bst.remove(2)
+        self.assertEqual(None, bst.find_node_with_parent(3)[0].left)
+        bst.remove(4)
+        self.assertEqual(None, bst.find_node_with_parent(3)[0].left)
+        self.assertEqual(3, bst.find_node_with_parent(5)[0].left.value)
+        self.assertRaises(Exception, bst.remove(5000))
+        bst.remove(11)
+        bst.remove(3)
+        bst.remove(5)
+        self.assertEqual(None, bst.find_node_with_parent(11)[0])
+        self.assertEqual(None, bst.find_node_with_parent(3)[0])
+        bst.remove(6)
+        self.assertEqual(None, bst.root)
+
 
 if __name__ == 'main':
     unittest.main()
