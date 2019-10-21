@@ -183,7 +183,7 @@ class BinarySearchTree:
             count_childs = node.count_childs()
             if count_childs <= 1:
                 return
-            min_index = int((count_childs + 1) / 2)
+            min_index = count_childs // 2 if count_childs / 2 == 0 else count_childs // 2 + 1
             min_value = self.min(min_index, node).value
             new_subtree_root = self.place_in_root(min_value, node)
             balance_helper(new_subtree_root.left)
