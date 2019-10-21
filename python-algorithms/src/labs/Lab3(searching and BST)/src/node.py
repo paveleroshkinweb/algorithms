@@ -20,6 +20,12 @@ class Node:
 
         return count_childs_helper(self.left) + count_childs_helper(self.right)
 
+    def remove_child(self, child):
+        if self.left == child:
+            child.left = None
+        else:
+            child.right = None
+
     def __str__(self):
         return f'(value={self.value}, ' \
                f'left={None if not self.left else self.left.value}, ' \

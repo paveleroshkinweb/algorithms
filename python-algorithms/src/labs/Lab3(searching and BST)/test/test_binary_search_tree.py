@@ -76,6 +76,11 @@ class TestBST(unittest.TestCase):
         bst.multiple_insert([12, 9, 14, 8, 11, 13, 15, 7])
         self.assertEqual(4, bst.height_tree())
 
+    def test_balance(self):
+        bst1 = BinarySearchTree()
+        bst1.multiple_insert([1, 2, 3, 4, 5, 6, 7, 8])
+        bst1.balance()
+        self.assertEqual(True, bst1.is_balanced())
 
 if __name__ == 'main':
     unittest.main()

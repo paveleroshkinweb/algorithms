@@ -1,5 +1,4 @@
 from node import Node
-from math import ceil
 
 
 class BinarySearchTree:
@@ -27,6 +26,40 @@ class BinarySearchTree:
                     insert_helper(node.right)
 
         insert_helper(self.root)
+
+    def remove(self, value):
+        if self.root is None:
+            raise Exception('Tree is empty!')
+        node, parent = self.find_node_with_parent(value)
+        if node is None:
+            return False
+        elif node.left is not None and node.right is not None:
+            parent_min = node
+            min = node.right
+            while min.left is not None:
+                parent_min = min
+                min = min.left
+            if parent_min.left == min:
+                parent_min.left = min.right
+            else:
+                parent_min.right = min.right
+            node.value = min.value
+        elif node.left is None:
+            if parent is None:
+                self.root = node.right
+            elif node.value > parent.value:
+                parent.right = node.right
+            else:
+                parent.left = node.right
+        elif node.right is None:
+            if parent is None:
+                self.root = node.left
+            elif node.value > parent.value:
+                parent.right = node.left
+            else:
+                parent.left = node.left
+        else:
+            parent.remove_child(node)
 
     def multiple_insert(self, values=[]):
         for value in values:
@@ -76,7 +109,7 @@ class BinarySearchTree:
 
         return find_node_with_parent_helper(self.root, None)
 
-    def min(self, index, node):
+    def min(self, index, node=None):
         stack = []
         current = node or self.root
         while len(stack) > 0 or current is not None:
@@ -98,7 +131,7 @@ class BinarySearchTree:
                 return 0
             return 1 + max(height_tree_helper(node.left), height_tree_helper(node.right))
 
-        return height_tree_helper(node or self.root)
+        return height_tree_helper(node)
 
     def left_rotation(self, root_value):
         node, node_parent = self.find_node_with_parent(root_value)
@@ -150,7 +183,7 @@ class BinarySearchTree:
             count_childs = node.count_childs()
             if count_childs <= 1:
                 return
-            min_index = ceil(count_childs / 2)
+            min_index = int((count_childs + 1) / 2)
             min_value = self.min(min_index, node).value
             new_subtree_root = self.place_in_root(min_value, node)
             balance_helper(new_subtree_root.left)
@@ -159,9 +192,16 @@ class BinarySearchTree:
         balance_helper(self.root)
 
     def is_balanced(self):
-        if self.root is None or self.root.count_childs() == 1:
-            return True
-        return abs(self.height_tree(self.root.left) - self.height_tree(self.root.right)) <= 1
+
+        def is_balanced_helper(node):
+            if node is None:
+                return True
+            diff = abs(self.height_tree(node.left) - self.height_tree(node.right))
+            if diff > 1:
+                return False
+            return is_balanced_helper(node.left) and is_balanced_helper(node.right)
+
+        return is_balanced_helper(self.root)
 
     def __str__(self):
         if self.root is None:
