@@ -44,22 +44,17 @@ class BinarySearchTree:
             else:
                 parent_min.right = min.right
             node.value = min.value
-        elif node.left is None:
+        elif node.left is None or node.right is None:
+            child_name = 'right' if node.left is None else 'left'
             if parent is None:
-                self.root = node.right
+                self.root = getattr(node, child_name)
             elif node.value > parent.value:
-                parent.right = node.right
+                parent.right = getattr(node, child_name)
             else:
-                parent.left = node.right
-        elif node.right is None:
-            if parent is None:
-                self.root = node.left
-            elif node.value > parent.value:
-                parent.right = node.left
-            else:
-                parent.left = node.left
+                parent.left = getattr(node, child_name)
         else:
             parent.remove_child(node)
+        return True
 
     def multiple_insert(self, values=[]):
         for value in values:
@@ -169,7 +164,7 @@ class BinarySearchTree:
         if root is None or root.has_no_child():
             return
         node, parent = self.find_node_with_parent(value)
-        while not node.has_direct_child(root):
+        while not node.has_direct_child(root) and root != node:
             rotate = self.right_rotation if node.value < parent.value else self.left_rotation
             node = rotate(parent.value)
             node, parent = self.find_node_with_parent(node.value)
@@ -180,10 +175,10 @@ class BinarySearchTree:
         def balance_helper(node):
             if node is None:
                 return
-            count_childs = node.count_childs()
-            if count_childs <= 1:
+            count_children = node.count_children()
+            if count_children <= 1:
                 return
-            min_index = count_childs // 2 if count_childs / 2 == 0 else count_childs // 2 + 1
+            min_index = int(count_children / 2 + 1)
             min_value = self.min(min_index, node).value
             new_subtree_root = self.place_in_root(min_value, node)
             balance_helper(new_subtree_root.left)

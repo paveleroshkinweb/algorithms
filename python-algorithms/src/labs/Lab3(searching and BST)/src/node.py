@@ -11,14 +11,14 @@ class Node:
     def has_no_child(self):
         return self.left is None and self.right is None
 
-    def count_childs(self):
+    def count_children(self):
 
-        def count_childs_helper(node):
+        def count_children_helper(node):
             if node is None:
                 return 0
-            return 1 + count_childs_helper(node.left) + count_childs_helper(node.right)
+            return 1 + count_children_helper(node.left) + count_children_helper(node.right)
 
-        return count_childs_helper(self.left) + count_childs_helper(self.right)
+        return count_children_helper(self.left) + count_children_helper(self.right)
 
     def remove_child(self, child):
         if self.left == child:

@@ -85,6 +85,10 @@ class TestBST(unittest.TestCase):
         bst2.multiple_insert([8, 7, 6, 5, 4, 3, 2, 1])
         bst2.balance()
         self.assertEqual(True, bst2.is_balanced())
+        bst3 = BinarySearchTree()
+        bst3.multiple_insert([10, 9, 11])
+        bst3.balance()
+        self.assertEqual(True, bst3.is_balanced())
 
     def test_remove(self):
         bst = BinarySearchTree()
