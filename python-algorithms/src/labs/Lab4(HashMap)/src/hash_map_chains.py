@@ -6,7 +6,7 @@ import hash
 class HashMapChains:
 
     def __init__(self):
-        self.capacity = 32
+        self.capacity = 33
         self.keys_set = set()
         self.buckets = [deque() for _ in range(self.capacity)]
 
@@ -19,7 +19,7 @@ class HashMapChains:
         self.keys_set.add(key)
 
     def get(self, key):
-        index = hash.hash1(key, self.capacity )
+        index = hash.hash1(key, self.capacity)
         bucket = self.buckets[index]
         for entry in bucket:
             if entry.key == key:
