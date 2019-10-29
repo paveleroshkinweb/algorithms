@@ -6,17 +6,19 @@ import hash
 class HashMapChains:
 
     def __init__(self):
-        self.capacity = 33
-        self.keys_set = set()
+        self.size = 0
+        self.capacity = 53
         self.buckets = [deque() for _ in range(self.capacity)]
 
     def put(self, key, value):
-        if key in self.keys_set:
-            raise Exception('Element with such key already exist!')
-        new_entry = Entry(key, value)
         index = hash.hash1(key, self.capacity)
-        self.buckets[index].append(new_entry)
-        self.keys_set.add(key)
+        bucket = self.buckets[index]
+        founded_entry = next((entry for entry in bucket if entry.key == key), None)
+        if founded_entry is not None:
+            founded_entry.value = value
+        else:
+            bucket.append(Entry(key, value))
+            self.size += 1
 
     def get(self, key):
         index = hash.hash1(key, self.capacity)
@@ -25,10 +27,4 @@ class HashMapChains:
             if entry.key == key:
                 return entry.value
         return None
-
-    def get_keys(self):
-        return self.keys_set.copy()
-
-    def size(self):
-        return len(self.keys_set)
 
