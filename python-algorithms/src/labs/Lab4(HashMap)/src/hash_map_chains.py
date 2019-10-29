@@ -23,8 +23,5 @@ class HashMapChains:
     def get(self, key):
         index = hash.hash1(key, self.capacity)
         bucket = self.buckets[index]
-        for entry in bucket:
-            if entry.key == key:
-                return entry.value
-        return None
+        return next((entry.value for entry in bucket if entry.key == key), None)
 
