@@ -5,13 +5,14 @@ import hash
 
 class HashMapChains:
 
-    def __init__(self):
+    def __init__(self, capacity=53, get_hash=hash.hash1):
         self.size = 0
-        self.capacity = 53
+        self.capacity = capacity
+        self.get_hash = get_hash
         self.buckets = [deque() for _ in range(self.capacity)]
 
     def put(self, key, value):
-        index = hash.hash1(key, self.capacity)
+        index = self.get_hash(key, self.capacity)
         bucket = self.buckets[index]
         founded_entry = next((entry for entry in bucket if entry.key == key), None)
         if founded_entry is not None:
@@ -21,7 +22,7 @@ class HashMapChains:
             self.size += 1
 
     def get(self, key):
-        index = hash.hash1(key, self.capacity)
+        index = self.get_hash(key, self.capacity)
         bucket = self.buckets[index]
         return next((entry.value for entry in bucket if entry.key == key), None)
 
