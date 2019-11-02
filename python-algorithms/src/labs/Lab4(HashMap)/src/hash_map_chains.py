@@ -26,3 +26,6 @@ class HashMapChains:
         bucket = self.buckets[index]
         return next((entry.value for entry in bucket if entry.key == key), None)
 
+    def get_size(self):
+        return self.size
+
