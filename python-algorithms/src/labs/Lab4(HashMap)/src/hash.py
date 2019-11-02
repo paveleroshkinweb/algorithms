@@ -13,5 +13,5 @@ def hash3(key, size):
     return int(size * math.modf(key * (math.sqrt(5) - 1) / 2)[0])
 
 
-def double_hash(key, size, i=1):
-    return (hash.hash1(key, size) + i * hash.hash3(key, size)) % size
+def double_hash(key, size, hash1, hash2, i=0):
+    return (hash1(key, size) + i * hash2(key, size)) % size
