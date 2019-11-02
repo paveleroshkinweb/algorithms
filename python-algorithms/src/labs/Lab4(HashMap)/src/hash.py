@@ -5,8 +5,10 @@ def hash1(key, size):
     return key % size
 
 
-def hash2(key, size):
-    return int(size * math.modf(key * 0.1)[0])
+def hash2(constant):
+    def inner(key, size):
+        return int(size * math.modf(key * constant)[0])
+    return inner
 
 
 def hash3(key, size):
