@@ -34,13 +34,3 @@ class Graph:
             return False
         return vertex2 in vertex1_environment
 
-
-if __name__ == '__main__':
-    graph = Graph()
-    graph.add_vertex(5)
-    graph.add_vertex(1)
-    graph.add_edge(3, 4)
-    graph.add_edge(4, 5)
-    print(graph.adjacency_list)
-    graph.remove_edge(4, 3)
-    print(graph.adjacency_list)
