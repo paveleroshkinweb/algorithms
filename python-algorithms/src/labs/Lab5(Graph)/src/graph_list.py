@@ -17,8 +17,6 @@ class Graph:
         if list1 is None or list2 is None:
             raise Exception('There is no such edge!')
         index1, index2 = list1.index(vertex2), list2.index(vertex1)
-        if index1 == -1 or index2 == -1:
-            raise Exception('There is no such edge!')
         list1.pop(index1)
         list2.pop(index2)
 
