@@ -32,3 +32,20 @@ class Graph:
             return False
         return vertex2 in vertex1_environment
 
+    def breadth_first_search(self):
+        if len(self.adjacency_list) == 0:
+            return
+        vertices = list(self.adjacency_list)
+        queue = [vertices[0]]
+        used_vertices = set()
+        while len(queue) > 0:
+            vertex = queue.pop(0)
+            childes = self.adjacency_list[vertex]
+            for child in childes:
+                if child not in used_vertices and child not in queue:
+                    queue.append(child)
+            used_vertices.add(vertex)
+            yield vertex
+    
+    def count_vertices(self):
+        return len(self.adjacency_list)

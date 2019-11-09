@@ -1,5 +1,6 @@
 import unittest
 from graph_list import Graph
+import utils
 
 
 class TestGraph(unittest.TestCase):
@@ -73,6 +74,15 @@ class TestGraph(unittest.TestCase):
         self.assertFalse(graph.is_adjacent_vertexes(1, 4))
         self.assertFalse(graph.is_adjacent_vertexes(5, 10))
 
+    def test_is_connected(self):
+        graph = Graph()
+        graph.add_edge(1, 2)
+        graph.add_edge(2, 3)
+        graph.add_edge(2, 4)
+        graph.add_edge(3, 4)
+        self.assertTrue(utils.is_graph_connected(graph))
+        graph.add_edge(5, 6)
+        self.assertFalse(utils.is_graph_connected(graph))
 
 if __name__ == 'main':
     unittest.main()
