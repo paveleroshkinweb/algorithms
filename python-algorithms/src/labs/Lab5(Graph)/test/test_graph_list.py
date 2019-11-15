@@ -84,5 +84,24 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(5, 6)
         self.assertFalse(utils.is_graph_connected(graph))
 
+    def test_is_bipartite(self):
+        graph = Graph()
+        self.assertTrue(utils.is_bipartite(graph))
+        graph.add_vertices([1, 2, 3])
+        self.assertTrue(utils.is_bipartite(graph))
+        graph.add_edge(1, 2)
+        graph.add_edge(3, 4)
+        self.assertTrue(utils.is_bipartite(graph))
+        graph.add_edge(5, 6)
+        graph.add_edge(1, 5)
+        self.assertTrue(utils.is_bipartite(graph))
+        graph.add_vertices([7, 8])
+        self.assertTrue(utils.is_bipartite(graph))
+        graph.add_edge(1, 3)
+        self.assertTrue(utils.is_bipartite(graph))
+        graph.add_edge(1, 4)
+        self.assertFalse(utils.is_bipartite(graph))
+
+
 if __name__ == 'main':
     unittest.main()

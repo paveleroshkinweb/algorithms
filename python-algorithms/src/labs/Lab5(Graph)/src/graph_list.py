@@ -8,6 +8,10 @@ class Graph:
             raise Exception('Such vertex already exist!')
         self.adjacency_list[vertex] = []
 
+    def add_vertices(self, vertices):
+        for vertex in vertices:
+            self.add_vertex(vertex)
+
     def add_edge(self, vertex1, vertex2):
         self.adjacency_list[vertex1] = (self.adjacency_list.get(vertex1) or []) + [vertex2]
         self.adjacency_list[vertex2] = (self.adjacency_list.get(vertex2) or []) + [vertex1]
@@ -26,7 +30,7 @@ class Graph:
     def get_vertex_environment(self, vertex):
         return self.adjacency_list.get(vertex)
 
-    def is_adjacent_vertexes(self, vertex1, vertex2):
+    def is_adjacent_vertices(self, vertex1, vertex2):
         vertex1_environment = self.get_vertex_environment(vertex1)
         if vertex1_environment is None:
             return False
