@@ -24,11 +24,11 @@ class Graph:
         list1.pop(index1)
         list2.pop(index2)
 
-    def get_all_vertexes(self):
+    def get_all_vertices(self):
         return self.adjacency_list.keys()
 
     def get_vertex_environment(self, vertex):
-        return self.adjacency_list.get(vertex)
+        return self.adjacency_list.get(vertex) or []
 
     def is_adjacent_vertices(self, vertex1, vertex2):
         vertex1_environment = self.get_vertex_environment(vertex1)
@@ -36,11 +36,16 @@ class Graph:
             return False
         return vertex2 in vertex1_environment
 
+    def get_start_vertex(self):
+        if len(self.adjacency_list) == 0:
+            return None
+        return list(self.adjacency_list)[0]
+
     def breadth_first_search(self):
         if len(self.adjacency_list) == 0:
             return
-        vertices = list(self.adjacency_list)
-        queue = [vertices[0]]
+        start_vertex = self.get_start_vertex()
+        queue = [start_vertex] if start_vertex else []
         used_vertices = set()
         while len(queue) > 0:
             vertex = queue.pop(0)
