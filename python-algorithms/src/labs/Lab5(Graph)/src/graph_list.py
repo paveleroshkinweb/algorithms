@@ -45,7 +45,7 @@ class Graph:
         if len(self.adjacency_list) == 0:
             return
         start_vertex = self.get_start_vertex()
-        queue = [start_vertex] if start_vertex else []
+        queue = [start_vertex]
         used_vertices = set()
         while len(queue) > 0:
             vertex = queue.pop(0)
