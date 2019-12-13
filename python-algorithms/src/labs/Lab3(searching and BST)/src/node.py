@@ -1,9 +1,10 @@
 class Node:
 
-    def __init__(self, value):
+    def __init__(self, value=None, left=None, right=None, parent_node=None):
         self.value = value
-        self.left = None
-        self.right = None
+        self.left = left
+        self.right = right
+        self.parent_node = parent_node
 
     def has_direct_child(self, node):
         return self.left == node or self.right == node
@@ -25,6 +26,12 @@ class Node:
             child.left = None
         else:
             child.right = None
+
+    def set_parent(self, parent_node):
+        self.parent_node = parent_node
+
+    def __lt__(self, other):
+        return other.value[0] > self.value[0]
 
     def __str__(self):
         return f'(value={self.value}, ' \
