@@ -2,7 +2,7 @@ import heapq
 from node import Node
 
 
-def huffman_code(input_str):
+def get_huffman_code(input_str):
     char_nodes = count_chars(input_str)
     priority_queue = get_priority_queue(char_nodes)
     while len(priority_queue) > 1:
@@ -13,6 +13,36 @@ def huffman_code(input_str):
         node2.set_parent(parent_node)
         heapq.heappush(priority_queue, parent_node)
     huffman_dictionary = create_huffman_dictionary(char_nodes)
+    encoded_text = encode_text(input_str, huffman_dictionary)
+    padded_encoded_text = pad_encoded_text(encoded_text)
+    return huffman_dictionary, to_byte_array(padded_encoded_text)
+
+
+def decode_huffman_code(bit_string, huffman_dictionary):
+    reverse_huffman_dictionary = get_reverse_huffman_dictionary(huffman_dictionary)
+    encoded_text = remove_extra_padding(bit_string)
+    decoded_text = decode_text(encoded_text, reverse_huffman_dictionary)
+    return decoded_text
+
+
+def encode_text(text, huffman_dictionary):
+    return ''.join(map(lambda symbol: huffman_dictionary[symbol], list(text)))
+
+
+def pad_encoded_text(encoded_text):
+    extra_padding = 8 - len(encoded_text) % 8
+    encoded_text += '0' * extra_padding
+    padded_info = "{0:08b}".format(extra_padding)
+    encoded_text = padded_info + encoded_text
+    return encoded_text
+
+
+def to_byte_array(padded_encoded_text):
+    byte_array = bytearray()
+    for i in range(0, len(padded_encoded_text), 8):
+        byte = padded_encoded_text[i:i+8]
+        byte_array.append(int(byte, 2))
+    return byte_array
 
 
 def count_chars(input_str):
@@ -26,10 +56,10 @@ def count_chars(input_str):
 
 
 def get_priority_queue(char_nodes):
-    heap = []
-    for node in char_nodes:
-        heapq.heappush(heap, node)
-    return heap
+        heap = []
+        for node in char_nodes:
+            heapq.heappush(heap, node)
+        return heap
 
 
 def create_huffman_dictionary(char_nodes):
@@ -44,3 +74,31 @@ def create_huffman_dictionary(char_nodes):
     return huffman_dictionary
 
 
+def get_reverse_huffman_dictionary(huffman_dictionary):
+    reverse_huffman_dictionary = {}
+    for key in huffman_dictionary:
+        value = huffman_dictionary[key]
+        reverse_huffman_dictionary[value] = key
+    return reverse_huffman_dictionary
+
+
+def remove_extra_padding(padded_encoded_text):
+    padded_info = padded_encoded_text[:8]
+    extra_padding = int(padded_info, 2)
+    padded_encoded_text = padded_encoded_text[8:]
+    encoded_text = padded_encoded_text[:-1 * extra_padding]
+    return encoded_text
+
+
+def decode_text(encoded_text, reverse_huffman_dictionary):
+    current_code = ""
+    decoded_text = ""
+
+    for bit in encoded_text:
+        current_code += bit
+        if current_code in reverse_huffman_dictionary:
+            character = reverse_huffman_dictionary[current_code]
+            decoded_text += character
+            current_code = ""
+
+    return decoded_text
