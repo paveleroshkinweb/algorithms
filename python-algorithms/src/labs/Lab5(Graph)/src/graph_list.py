@@ -55,6 +55,22 @@ class Graph:
                     queue.append(child)
             used_vertices.add(vertex)
             yield vertex
-    
+
+    def depth_first_search(self):
+
+        def depth_first_search_helper(current_vertex):
+            visited_vertices.add(current_vertex)
+            vertices_list.append(current_vertex)
+            for vertex in self.get_vertex_environment(current_vertex):
+                if vertex not in visited_vertices:
+                    depth_first_search_helper(vertex)
+
+        if len(self.adjacency_list) == 0:
+            return []
+        visited_vertices = set()
+        vertices_list = []
+        depth_first_search_helper(self.get_start_vertex())
+        return vertices_list
+
     def count_vertices(self):
         return len(self.adjacency_list)

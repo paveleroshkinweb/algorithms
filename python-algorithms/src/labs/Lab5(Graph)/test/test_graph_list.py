@@ -1,5 +1,6 @@
 import unittest
 from graph_list import Graph
+from oriented_graph import Graph as OrientedGraph
 import utils
 
 
@@ -102,33 +103,21 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(1, 5)
         self.assertTrue(utils.is_bipartite(graph))
 
-    # def test_find_euler_path(self):
-    #     node_list = [chr(ord('a') + i) for i in range(6)]
-    #     correct_answers = ['a', 'b', 'c', 'd', 'f', 'c', 'e', 'a', 'd', 'e', 'f', 'a']
-    #     graph = Graph()
-    #     graph.add_vertices(node_list)
-    #     graph.add_edge(node_list[0], node_list[1])
-    #     graph.add_edge(node_list[0], node_list[3])
-    #     graph.add_edge(node_list[0], node_list[4])
-    #     graph.add_edge(node_list[0], node_list[5])
-    #
-    #     graph.add_edge(node_list[4], node_list[2])
-    #     graph.add_edge(node_list[4], node_list[3])
-    #     graph.add_edge(node_list[4], node_list[5])
-    #
-    #     graph.add_edge(node_list[2], node_list[1])
-    #     graph.add_edge(node_list[2], node_list[3])
-    #     graph.add_edge(node_list[2], node_list[5])
-    #
-    #     graph.add_edge(node_list[5], node_list[3])
-    #
-    #     path = utils.find_euler_path(graph)
-    #
-    #     self.assertSequenceEqual(path, correct_answers)
-    #     # for node, correct_answer in zip(path, correct_answers):
-    #     #     self.assertEqual(node, correct_answers)
-    #
-    #     path = graph.euler_cycle()
+    def test_dfs(self):
+        graph = OrientedGraph()
+        self.assertSequenceEqual([], graph.depth_first_search())
+        graph.add_edge(1, 2)
+        graph.add_edge(1, 3)
+        graph.add_edge(4, 2)
+        graph.add_edge(4, 3)
+        graph.add_edge(3, 2)
+        self.assertSequenceEqual([1, 2, 3, 4], graph.depth_first_search())
+        graph = OrientedGraph()
+        graph.add_edge(1, 2)
+        graph.add_edge(2, 3)
+        graph.add_edge(1, 5)
+        graph.add_edge(5, 6)
+        self.assertSequenceEqual([1, 2, 3, 5, 6], graph.depth_first_search())
 
 
 if __name__ == 'main':
