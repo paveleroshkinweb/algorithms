@@ -1,42 +1,46 @@
+from functools import reduce
+
+
 class StableMatch:
 
-    def __init__(self, task_preferences_matrix, task_estimation_matrix):
+    def __init__(self, task_preferences_matrix, task_estimations_matrix):
         self.task_preferences_matrix = task_preferences_matrix
-        self.task_estimation_matrix = task_estimation_matrix
+        self.task_estimations_matrix = task_estimations_matrix
 
     def get_stable_pairs(self):
-        pairs = {i: [] for i in range(len(self.task_preferences_matrix))}
+        available_tasks = set(range(len(self.task_estimations_matrix)))
+        pairs = dict([(user, None) for user in range(len(self.task_preferences_matrix))])
+        while len(available_tasks) > 0:
+            current_task = self.get_current_task(available_tasks)
+            current_task_users_estimations = self.get_current_task_users_estimations(current_task)
+            for estimation, user in current_task_users_estimations:
+                task = pairs.get(user)
+                if task is None:
+                    pairs[user] = current_task
+                    available_tasks.remove(current_task)
+                    break
+                else:
+                    preference_for_task = self.task_preferences_matrix[user].index(task)
+                    preference_for_current_task = self.task_preferences_matrix[user].index(current_task)
+                    if preference_for_current_task < preference_for_task:
+                        pairs[user] = current_task
+                        available_tasks.remove(current_task)
+                        available_tasks.add(task)
+                        break
+        return pairs
 
-        def has_empty(list_):
-            flag = True
-            for i in range(len(list_)):
-                flag = flag and list_[i] != []
+    def get_current_task_users_estimations(self, current_task):
+        arr_size = len(self.task_estimations_matrix)
+        users_estimations_array = [(self.task_estimations_matrix[current_task][i], i) for i in range(arr_size)]
+        users_estimations_array.sort(key=lambda pair: pair[0])
+        return users_estimations_array
 
-            return flag
+    def get_current_task(self, available_tasks):
+        current_task = available_tasks.pop()
+        available_tasks.add(current_task)
+        return current_task
 
-        indexes_prop = [0 for _ in range(len(self.task_preferences_matrix))]
-        marked_props = []
-        while not has_empty(pairs):
-            for i in range(len(pairs)):
-                if i not in marked_props:
-                    pairs[self.task_preferences_matrix[i][indexes_prop[i]]].append(i)
-                    indexes_prop[i] += 1
-                    marked_props.append(i)
-
-            for i in range(len(pairs)):
-                if len(pairs[i]) > 1:
-                    best_proposor, best_priority = None, len(pairs)
-                    for j in range(len(pairs[i])):
-                        prop_prior = self.task_estimation_matrix[i].index(pairs[i][j])
-                        if prop_prior < best_priority:
-                            best_proposor, best_priority = pairs[i][j], prop_prior
-
-                    while len(pairs[i]) != 1:
-                        for x in pairs[i]:
-                            if x != best_proposor:
-                                pairs[i].remove(x)
-                                marked_props.remove(x)
-
-        return pairs, sum(self.task_estimation_matrix[pairs[x][0]].index(x) for x in pairs), \
-               sum(self.task_estimation_matrix[pairs[x][0]].index(x) for x in pairs)
+    def total_efficiency(self, pairs):
+        matrix_elements = map(lambda item: self.task_estimations_matrix[item[1]][item[0]], pairs.items())
+        return reduce(lambda acc, item: acc + item, matrix_elements)
 
