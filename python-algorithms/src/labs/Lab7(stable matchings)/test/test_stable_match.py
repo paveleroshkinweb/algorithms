@@ -18,7 +18,9 @@ class TestStableMatch(unittest.TestCase):
             [13, 14, 10, 8, 11],
             [11, 13, 14, 9, 15]]
         stable_match = StableMatch(preferences, estimations)
-        pairs = stable_match.get_stable_pairs()
-        self.assertEqual({0: 4, 1: 0, 2: 3, 3: 1, 4: 2}, pairs)
-        self.assertEqual(46, stable_match.total_efficiency(pairs))
+        pairs_by_estimations = stable_match.get_stable_pairs_by_estimations()
+        pairs_by_preferences = stable_match.get_stable_pairs_by_preferences()
+        self.assertEqual({0: 4, 1: 0, 2: 3, 3: 1, 4: 2}, pairs_by_estimations)
+        self.assertEqual(46, stable_match.total_efficiency(pairs_by_estimations))
+        self.assertEqual(51, stable_match.total_efficiency(pairs_by_preferences));
 
