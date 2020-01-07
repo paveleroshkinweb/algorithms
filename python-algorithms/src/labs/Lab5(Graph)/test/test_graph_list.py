@@ -98,7 +98,7 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(5, 6)
         self.assertTrue(utils.is_bipartite(graph))
         graph.add_edge(1, 5)
-        self.assertFalse(utils.is_bipartite(graph))
+        self.assertFalse(utils.is_bipartite(graph)[0])
 
     def test_dfs(self):
         graph = OrientedGraph()
