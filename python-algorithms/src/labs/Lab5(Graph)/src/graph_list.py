@@ -1,3 +1,6 @@
+import itertools
+
+
 class Graph:
 
     def __init__(self):
@@ -41,10 +44,10 @@ class Graph:
             return None
         return list(self.adjacency_list)[0]
 
-    def breadth_first_search(self):
+    def breadth_first_search(self, start_vertex=None):
         if len(self.adjacency_list) == 0:
             return
-        start_vertex = self.get_start_vertex()
+        start_vertex = start_vertex or self.get_start_vertex()
         queue = [start_vertex]
         used_vertices = set()
         while len(queue) > 0:
@@ -74,3 +77,14 @@ class Graph:
 
     def count_vertices(self):
         return len(self.adjacency_list)
+
+    def connected_components(self):
+        vertices = set(self.adjacency_list.keys())
+        components = [list(self.breadth_first_search())]
+        collected_vertices = set(itertools.chain.from_iterable(components))
+        while collected_vertices != vertices:
+            difference = vertices - collected_vertices
+            components.append(list(self.breadth_first_search(difference.pop())))
+            collected_vertices = set(itertools.chain.from_iterable(components))
+        return components
+
