@@ -79,6 +79,8 @@ class Graph:
         return len(self.adjacency_list)
 
     def connected_components(self):
+        if len(self.adjacency_list) == 0:
+            return []
         vertices = set(self.adjacency_list.keys())
         components = [list(self.breadth_first_search())]
         collected_vertices = set(itertools.chain.from_iterable(components))
@@ -87,4 +89,3 @@ class Graph:
             components.append(list(self.breadth_first_search(difference.pop())))
             collected_vertices = set(itertools.chain.from_iterable(components))
         return components
-
