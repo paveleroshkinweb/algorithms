@@ -116,6 +116,24 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(5, 6)
         self.assertSequenceEqual([1, 2, 3, 5, 6], graph.depth_first_search())
 
+    def test_prim(self):
+        graph = Graph()
+        graph.add_edge('A', 'D', 5)
+        graph.add_edge('A', 'B', 7)
+        graph.add_edge('D', 'B', 9)
+        graph.add_edge('D', 'E', 15)
+        graph.add_edge('B', 'E', 7)
+        graph.add_edge('B', 'C', 8)
+        graph.add_edge('C', 'E', 5)
+        graph.add_edge('D', 'F', 6)
+        graph.add_edge('E', 'G', 9)
+        graph.add_edge('F', 'G', 11)
+        graph.add_edge('F', 'E', 8)
+        total_cost, result_graph = utils.prim(graph)
+        self.assertEqual(39, total_cost)
+        self.assertEqual(7, len(result_graph.get_all_vertices()))
+        self.assertTrue(utils.is_graph_connected(result_graph))
+
 
 if __name__ == 'main':
     unittest.main()

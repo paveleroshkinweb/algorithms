@@ -5,6 +5,7 @@ class Graph:
 
     def __init__(self):
         self.adjacency_list = {}
+        self.costs = {}
 
     def add_vertex(self, vertex):
         if self.adjacency_list.get(vertex) is not None:
@@ -15,9 +16,13 @@ class Graph:
         for vertex in vertices:
             self.add_vertex(vertex)
 
-    def add_edge(self, vertex1, vertex2):
+    def add_edge(self, vertex1, vertex2, cost=0):
         self.adjacency_list[vertex1] = (self.adjacency_list.get(vertex1) or []) + [vertex2]
         self.adjacency_list[vertex2] = (self.adjacency_list.get(vertex2) or []) + [vertex1]
+        self.costs[(vertex1, vertex2)] = cost
+
+    def get_edge_const(self, edge):
+        return self.costs.get(edge) or self.costs.get(edge[::-1])
 
     def remove_edge(self, vertex1, vertex2):
         list1, list2 = self.adjacency_list.get(vertex1), self.adjacency_list.get(vertex2)
@@ -26,6 +31,8 @@ class Graph:
         index1, index2 = list1.index(vertex2), list2.index(vertex1)
         list1.pop(index1)
         list2.pop(index2)
+        self.costs[(vertex1, vertex2)] = None
+        self.costs[(vertex2, vertex1)] = None
 
     def get_all_vertices(self):
         return self.adjacency_list.keys()
