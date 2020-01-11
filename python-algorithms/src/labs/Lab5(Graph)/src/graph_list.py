@@ -1,4 +1,5 @@
 import itertools
+import copy
 
 
 class Graph:
@@ -36,6 +37,27 @@ class Graph:
 
     def get_all_vertices(self):
         return self.adjacency_list.keys()
+
+    def get_all_edges(self):
+        vertices = self.adjacency_list.keys()
+        edges = []
+        for vertex in vertices:
+            for adjacent_vertex in self.get_vertex_environment(vertex):
+                edge = (vertex, adjacent_vertex)
+                edges.append((edge, self.get_edge_const(edge)))
+        return edges
+
+    def is_edge_in_graph(self, edge):
+        vertex1, vertex2 = edge[0], edge[1]
+        list1, list2 = self.adjacency_list.get(vertex1), self.adjacency_list.get(vertex2)
+        if list1 is not None and vertex2 in list1:
+            return True
+        if list2 is not None and vertex1 in list2:
+            return True
+        return False
+
+    def is_vertex_in_graph(self, vertex):
+        return self.adjacency_list.get(vertex) is not None
 
     def get_vertex_environment(self, vertex):
         return self.adjacency_list.get(vertex) or []
@@ -96,3 +118,9 @@ class Graph:
             components.append(list(self.breadth_first_search(difference.pop())))
             collected_vertices = set(itertools.chain.from_iterable(components))
         return components
+
+    def __copy__(self):
+        copy_graph = Graph()
+        copy_graph.costs = copy.deepcopy(self.costs)
+        copy_graph.adjacency_list = copy.deepcopy(self.adjacency_list)
+        return copy_graph

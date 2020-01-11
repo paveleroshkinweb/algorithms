@@ -64,7 +64,7 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(2, 4)
         self.assertSequenceEqual([2, 3], graph.get_vertex_environment(1))
         self.assertSequenceEqual([1, 4], graph.get_vertex_environment(2))
-        self.assertEqual(None, graph.get_vertex_environment(100))
+        self.assertEqual([], graph.get_vertex_environment(100))
 
     def test_is_adjacent_vertices(self):
         graph = Graph()
@@ -100,6 +100,25 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(1, 5)
         self.assertFalse(utils.is_bipartite(graph)[0])
 
+    def test_is_acyclic_graph(self):
+        graph = Graph()
+        self.assertTrue(utils.is_acyclic_graph(graph))
+        graph.add_edge(1, 2)
+        graph.add_edge(2, 3)
+        graph.add_edge(1, 3)
+        self.assertFalse(utils.is_acyclic_graph(graph))
+        graph.remove_edge(1, 3)
+        self.assertTrue(utils.is_acyclic_graph(graph))
+        graph.add_edge(2, 4)
+        graph.add_edge(3, 4)
+        self.assertFalse(utils.is_acyclic_graph(graph))
+        graph.remove_edge(3, 4)
+        self.assertTrue(utils.is_acyclic_graph(graph))
+        graph.add_edge(3, 5)
+        graph.add_edge(3, 7)
+        graph.add_edge(5, 7)
+        self.assertFalse(utils.is_acyclic_graph(graph))
+
     def test_dfs(self):
         graph = OrientedGraph()
         self.assertSequenceEqual([], graph.depth_first_search())
@@ -118,6 +137,8 @@ class TestGraph(unittest.TestCase):
 
     def test_prim(self):
         graph = Graph()
+        total_cost, _ = utils.prim(graph)
+        self.assertEqual(0, total_cost)
         graph.add_edge('A', 'D', 5)
         graph.add_edge('A', 'B', 7)
         graph.add_edge('D', 'B', 9)
@@ -133,6 +154,28 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(39, total_cost)
         self.assertEqual(7, len(result_graph.get_all_vertices()))
         self.assertTrue(utils.is_graph_connected(result_graph))
+        self.assertTrue(utils.is_acyclic_graph(result_graph))
+
+    def test_kruskal(self):
+        graph = Graph()
+        total_cost, _ = utils.kruskal(graph)
+        self.assertEqual(0, total_cost)
+        graph.add_edge('A', 'D', 5)
+        graph.add_edge('A', 'B', 7)
+        graph.add_edge('D', 'B', 9)
+        graph.add_edge('D', 'E', 15)
+        graph.add_edge('B', 'E', 7)
+        graph.add_edge('B', 'C', 8)
+        graph.add_edge('C', 'E', 5)
+        graph.add_edge('D', 'F', 6)
+        graph.add_edge('E', 'G', 9)
+        graph.add_edge('F', 'G', 11)
+        graph.add_edge('F', 'E', 8)
+        total_cost, result_graph = utils.kruskal(graph)
+        self.assertEqual(39, total_cost)
+        self.assertEqual(7, len(result_graph.get_all_vertices()))
+        self.assertTrue(utils.is_graph_connected(result_graph))
+        self.assertTrue(utils.is_acyclic_graph(result_graph))
 
 
 if __name__ == 'main':
