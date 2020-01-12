@@ -177,6 +177,25 @@ class TestGraph(unittest.TestCase):
         self.assertTrue(utils.is_graph_connected(result_graph))
         self.assertTrue(utils.is_acyclic_graph(result_graph))
 
+    def test_euler_cycle(self):
+        graph = Graph()
+        self.assertIsNone(utils.find_euler_cycle(graph))
+        graph.add_edge(1, 2)
+        graph.add_edge(1, 3)
+        self.assertIsNone(utils.find_euler_cycle(graph))
+        graph.add_edge(2, 3)
+        self.assertSequenceEqual([1, 2, 3, 1], utils.find_euler_cycle(graph))
+        graph.add_edge(2, 4)
+        graph.add_edge(2, 6)
+        graph.add_edge(3, 6)
+        graph.add_edge(3, 5)
+        graph.add_edge(5, 6)
+        graph.add_edge(5, 4)
+        graph.add_edge(4, 6)
+        graph.add_edge(4, 7)
+        graph.add_edge(5, 7)
+        self.assertSequenceEqual([1, 2, 4, 6, 5, 7, 4, 5, 3, 6, 2, 3, 1], utils.find_euler_cycle(graph))
+
 
 if __name__ == 'main':
     unittest.main()
