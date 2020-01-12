@@ -194,7 +194,7 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(4, 6)
         graph.add_edge(4, 7)
         graph.add_edge(5, 7)
-        self.assertSequenceEqual([1, 2, 4, 6, 5, 7, 4, 5, 3, 6, 2, 3, 1], utils.find_euler_cycle(graph))
+        self.assertSequenceEqual([1, 2, 4, 6, 5, 7, 4, 5, 3, 6, 2, 3, 1], utils.find_euler_cycle(graph, 1))
 
 
 if __name__ == 'main':
