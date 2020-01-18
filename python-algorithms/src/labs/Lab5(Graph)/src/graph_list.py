@@ -22,7 +22,7 @@ class Graph:
         self.adjacency_list[vertex2] = (self.adjacency_list.get(vertex2) or []) + [vertex1]
         self.costs[(vertex1, vertex2)] = cost
 
-    def get_edge_const(self, edge):
+    def get_edge_cost(self, edge):
         return self.costs.get(edge) or self.costs.get(edge[::-1])
 
     def remove_edge(self, vertex1, vertex2):
@@ -47,7 +47,7 @@ class Graph:
         for vertex in vertices:
             for adjacent_vertex in self.get_vertex_environment(vertex):
                 edge = (vertex, adjacent_vertex)
-                edges.append((edge, self.get_edge_const(edge)))
+                edges.append((edge, self.get_edge_cost(edge)))
         return edges
 
     def is_edge_in_graph(self, edge):

@@ -54,3 +54,6 @@ class Graph:
         for vertex in start_vertices:
             depth_first_search_helper(vertex)
         return vertices_list
+
+    def get_all_vertices(self):
+        return self.adjacency_list.keys()

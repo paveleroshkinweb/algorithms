@@ -1,6 +1,7 @@
 from graph_list import Graph
 import sys
 from copy import copy
+import heapq
 
 def is_graph_connected(graph):
     return len(list(graph.breadth_first_search())) == graph.count_vertices()
@@ -47,7 +48,7 @@ def _find_min_edge_prim(graph, used_vertices):
     for vertex in vertices:
         for adjacent_vertex in graph.get_vertex_environment(vertex):
             if adjacent_vertex not in used_vertices:
-                edge_cost = graph.get_edge_const((vertex, adjacent_vertex))
+                edge_cost = graph.get_edge_cost((vertex, adjacent_vertex))
                 if min_edge_cost > edge_cost:
                     min_edge_cost = edge_cost
                     min_edge = (vertex, adjacent_vertex)
@@ -134,3 +135,15 @@ def find_euler_cycle(graph, start_vertex=None):
 
 def _euler_cycle_exist(graph):
     return all(map(lambda vertex: graph.get_vertex_degree(vertex) % 2 == 0, graph.get_all_vertices()))
+
+
+def dijkstra(graph, start_vertex):
+    marked_vertices = set()
+    queue = [(0, start_vertex)]
+    while len(queue) > 0:
+        path_len, vertex = heapq.heappop(queue)
+        marked_vertices.update(vertex)
+        for adjacent_vertex in graph.get_vertex_environment(vertex):
+            if adjacent_vertex not in marked_vertices:
+                edge_cost = graph.get_edge_cost((vertex, adjacent_vertex))
+                heapq.heappush(queue, (edge_cost + path_len, adjacent_vertex))
