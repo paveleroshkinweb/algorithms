@@ -196,6 +196,24 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(5, 7)
         self.assertSequenceEqual([1, 2, 4, 6, 5, 7, 4, 5, 3, 6, 2, 3, 1], utils.find_euler_cycle(graph, 1))
 
+    def test_dijkstra(self):
+        graph = OrientedGraph()
+        graph.add_edge(1, 2, 5)
+        graph.add_edge(1, 3, 2)
+        graph.add_edge(3, 2, 1)
+        graph.add_edge(1, 4, 3)
+        graph.add_edge(2, 5, 4)
+        graph.add_edge(3, 5, 2)
+        graph.add_edge(4, 5, 1)
+        graph.add_edge(5, 6, 1)
+        paths = utils.dijkstra(graph, 1)
+        self.assertEqual(([1], 0), paths[1])
+        self.assertEqual(([1, 3, 2], 3), paths[2])
+        self.assertEqual(([1, 3], 2), paths[3])
+        self.assertEqual(([1, 4], 3), paths[4])
+        self.assertEqual(([1, 4, 5], 4), paths[5])
+        self.assertEqual(([1, 4, 5, 6], 5), paths[6])
+
 
 if __name__ == 'main':
     unittest.main()

@@ -3,6 +3,7 @@ import sys
 from copy import copy
 import heapq
 
+
 def is_graph_connected(graph):
     return len(list(graph.breadth_first_search())) == graph.count_vertices()
 
@@ -138,12 +139,17 @@ def _euler_cycle_exist(graph):
 
 
 def dijkstra(graph, start_vertex):
-    marked_vertices = set()
-    queue = [(0, start_vertex)]
+    queue = [(0, [start_vertex], start_vertex)]
+    result_paths = {}
     while len(queue) > 0:
-        path_len, vertex = heapq.heappop(queue)
-        marked_vertices.update(vertex)
+        path_len, path, vertex = heapq.heappop(queue)
+        result_path = result_paths.get(vertex)
+        if result_path is not None:
+            result_paths[vertex] = result_path if result_path[1] < path_len else (path, path_len)
+        else:
+            result_paths[vertex] = (path, path_len)
         for adjacent_vertex in graph.get_vertex_environment(vertex):
-            if adjacent_vertex not in marked_vertices:
+            if adjacent_vertex not in result_paths:
                 edge_cost = graph.get_edge_cost((vertex, adjacent_vertex))
-                heapq.heappush(queue, (edge_cost + path_len, adjacent_vertex))
+                heapq.heappush(queue, (edge_cost + path_len, path + [adjacent_vertex], adjacent_vertex))
+    return result_paths
