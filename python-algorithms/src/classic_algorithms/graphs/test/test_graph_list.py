@@ -214,6 +214,20 @@ class TestGraph(unittest.TestCase):
         self.assertEqual(([1, 4, 5], 4), paths[5])
         self.assertEqual(([1, 4, 5, 6], 5), paths[6])
 
+    def test_dsatur(self):
+        graph = Graph()
+        graph.add_edges([(1, 2), (1, 7), (2, 3), (7, 6), (6, 3), (3, 4), (6, 4), (6, 5), (5, 4)])
+        vertices_colors, used_colors = utils.dsatur(graph)
+        self.assertDictEqual({6: 0, 3: 1, 4: 2, 5: 1, 2: 0, 1: 1, 7: 2}, vertices_colors)
+        self.assertEqual(used_colors, 3)
+
+    def test_gis(self):
+        graph = Graph()
+        graph.add_edges([(1, 2), (1, 7), (2, 3), (7, 6), (6, 3), (3, 4), (6, 4), (6, 5), (5, 4)])
+        vertices_colors, used_colors = utils.gis(graph)
+        self.assertDictEqual({1: 0, 5: 0, 3: 0, 2: 1, 4: 1, 7: 1, 6: 2}, vertices_colors)
+        self.assertEqual(used_colors, 3)
+
 
 if __name__ == 'main':
     unittest.main()
