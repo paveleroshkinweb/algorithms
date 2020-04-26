@@ -141,6 +141,17 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(5, 6)
         self.assertSequenceEqual([1, 2, 3, 5, 6], graph.depth_first_search())
 
+    def test_topological_sort(self):
+        graph = OrientedGraph()
+        graph.add_edges([(1, 2), (1, 3), (3, 2), (3, 10), (3, 11), (10, 11)])
+        self.assertSequenceEqual([1, 3, 2, 10, 11], graph.topological_sort())
+        graph.add_edges([(2, 4), (4, 5), (4, 6), (6, 7), (5, 7)])
+        self.assertSequenceEqual([1, 3, 2, 4, 5, 6, 7, 10, 11], graph.topological_sort())
+        graph.add_edges([(5, 9), (7, 9), (7, 8), (9, 8)])
+        self.assertSequenceEqual([1, 3, 2, 4, 5, 6, 7, 9, 8, 10, 11], graph.topological_sort())
+        graph.add_edges([(8, 12), (12, 7)])
+        self.assertIsNone(graph.topological_sort())
+
     def test_prim(self):
         graph = Graph()
         total_cost, _ = utils.prim(graph)
