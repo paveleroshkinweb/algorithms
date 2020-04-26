@@ -88,11 +88,9 @@ class Graph:
         used_vertices = set()
         while len(queue) > 0:
             vertex = queue.pop(0)
-            childes = self.adjacency_list[vertex]
-            for child in childes:
-                if child not in used_vertices and child not in queue:
-                    queue.append(child)
             used_vertices.add(vertex)
+            unvisited_vertices = [v for v in self.adjacency_list[vertex] if v not in used_vertices and v not in queue]
+            queue += unvisited_vertices
             yield vertex
 
     def depth_first_search(self):
