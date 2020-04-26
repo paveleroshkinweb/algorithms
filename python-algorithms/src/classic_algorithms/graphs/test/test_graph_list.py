@@ -96,8 +96,14 @@ class TestGraph(unittest.TestCase):
         graph.add_edge(2, 3)
         graph.add_edge(4, 5)
         graph.add_edge(5, 6)
-        self.assertTrue(utils.is_bipartite(graph))
+        self.assertTrue(utils.is_bipartite(graph)[0])
         graph.add_edge(1, 5)
+        self.assertFalse(utils.is_bipartite(graph)[0])
+        graph = Graph()
+        graph.add_edges([(1, 5), (2, 5), (2, 6), (6, 7), (7, 3), (7, 4)])
+        self.assertTrue(utils.is_bipartite(graph)[0])
+        graph = Graph()
+        graph.add_edges([(1, 4), (2, 4), (1, 2), (2, 5), (5, 3)])
         self.assertFalse(utils.is_bipartite(graph)[0])
 
     def test_is_acyclic_graph(self):
