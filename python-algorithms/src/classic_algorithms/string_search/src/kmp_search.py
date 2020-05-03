@@ -1,13 +1,17 @@
 def kmp_search(str, substr):
     offsets = get_offsets(substr)
     j = 0
-    for i in range(len(str)):
+    i = 0
+    while i < len(str):
         if str[i] == substr[j] and j == len(substr) - 1:
             return i - j
         elif str[i] == substr[j]:
+            i += 1
             j += 1
+        elif str[i] != substr[j] and j == 0:
+            i += 1
         else:
-            j = offsets[j-1]
+            j = offsets[j - 1]
     return -1
 
 
