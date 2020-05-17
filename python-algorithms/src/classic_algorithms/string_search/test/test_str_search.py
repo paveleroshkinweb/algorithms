@@ -1,5 +1,7 @@
 from kmp_search import kmp_search
 from naive_search import naive_search
+from bm_search import bm_search
+from rk_search import rk_search
 from unittest import TestCase
 from datetime import datetime
 import random
@@ -21,20 +23,24 @@ class TestStrSearch(TestCase):
         self.assertEqual(1, kmp_search('abdskgihboris', 'bdsk'))
 
     def test_time(self):
-        search_str = ['a', 'b', 'c'] * 100000
-        random.shuffle(search_str)
-        search_str = ''.join(search_str)
-        substrings = []
-        for i in range(1, 10, 1):
-            index = random.randint(50000, len(search_str) - 1000)
-            substrings.append(search_str[index:index+(i*10)])
-        for substring in substrings:
-            initial_time = datetime.now()
-            naive_search(search_str, substring)
-            print(f'length: {len(substring)}')
-            print(f'naive search: {(datetime.now() - initial_time).microseconds}')
-            initial_time = datetime.now()
-            kmp_search(search_str, substring)
-            print(f'kmp search: {(datetime.now() - initial_time).microseconds}')
+        with open('../data/data.txt', 'r') as file:
+            text = file.read()
+            patterns = [
+                'как бы черта, отделяющая живых от мертвых',
+                'кость, и двадцатидвухлетний безупречный генерал',
+                'тебя так; разумеется, что я тебе говорю, есть единственно',
+                'духовные лица и причетники, люди (прислуга) тоже'
+            ]
+            search_functions = [naive_search, kmp_search, bm_search, rk_search]
+            for pattern in patterns:
+                results = []
+                for search in search_functions:
+                    start_time = datetime.now()
+                    results.append(search(text, pattern))
+                    print(f'Phrase="{pattern}" algo="{search.__name__}" time={(datetime.now()-start_time).microseconds}')
+                assert all(result == results[0] for result in results)
+
+
+
 
 
