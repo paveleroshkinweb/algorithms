@@ -245,6 +245,21 @@ class TestGraph(unittest.TestCase):
         self.assertDictEqual({1: 0, 5: 0, 3: 0, 2: 1, 4: 1, 7: 1, 6: 2}, vertices_colors)
         self.assertEqual(used_colors, 3)
 
+    def test_djkstra(self):
+        graph = OrientedGraph()
+        graph.add_edge(1, 2, 2)
+        graph.add_edge(1, 3, 3)
+        graph.add_edge(2, 4, 3)
+        graph.add_edge(2, 6, 2)
+        graph.add_edge(3, 4, 1)
+        graph.add_edge(3, 5, 1)
+        graph.add_edge(4, 5, 2)
+        graph.add_edge(4, 6, 4)
+        graph.add_edge(5, 6, 1)
+        self.assertEqual((4, [1, 2, 6]), utils.djkstra(graph, 1, 6))
+        self.assertIsNone(utils.djkstra(graph, 4, 3))
+        self.assertEqual((2, [3, 5, 6]), utils.djkstra(graph, 3, 6))
+
 
 if __name__ == 'main':
     unittest.main()

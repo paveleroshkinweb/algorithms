@@ -138,23 +138,6 @@ def _euler_cycle_exist(graph):
     return all(map(lambda vertex: graph.get_vertex_degree(vertex) % 2 == 0, graph.get_all_vertices()))
 
 
-def dijkstra(graph, start_vertex):
-    queue = [(0, [start_vertex], start_vertex)]
-    result_paths = {}
-    while len(queue) > 0:
-        path_len, path, vertex = heapq.heappop(queue)
-        result_path = result_paths.get(vertex)
-        if result_path is not None:
-            result_paths[vertex] = result_path if result_path[1] < path_len else (path, path_len)
-        else:
-            result_paths[vertex] = (path, path_len)
-        for adjacent_vertex in graph.get_vertex_environment(vertex):
-            if adjacent_vertex not in result_paths:
-                edge_cost = graph.get_edge_cost((vertex, adjacent_vertex))
-                heapq.heappush(queue, (edge_cost + path_len, path + [adjacent_vertex], adjacent_vertex))
-    return result_paths
-
-
 def _find_vertex_to_color_dsatur(graph, not_colored_vertices, adjacent_vertices_colors):
     vertex_to_color = next(iter(not_colored_vertices))
     for vertex in not_colored_vertices:
@@ -208,4 +191,20 @@ def gis(graph):
                     copy_graph.remove_edge(adjacent_vertex, vertex)
         last_color += 1
     return vertices_colors, last_color
+
+
+def djkstra(graph, start_vertex, target_vertex):
+    queue = [(0, [start_vertex])]
+    marked_vertices = set()
+    while queue:
+        current_cost_path = heapq.heappop(queue)
+        last_vertex = current_cost_path[1][-1]
+        if last_vertex == target_vertex:
+            return current_cost_path
+        marked_vertices.add(last_vertex)
+        not_marked_vertices = set(graph.get_vertex_environment(last_vertex)) - marked_vertices
+        for vertex in not_marked_vertices:
+            edge_cost = graph.get_edge_cost((last_vertex, vertex))
+            heapq.heappush(queue, (current_cost_path[0] + edge_cost, current_cost_path[1] + [vertex]))
+    return None
 
