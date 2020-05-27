@@ -73,8 +73,7 @@ def kruskal(graph):
 
 def _sorted_edges(graph):
     edges = graph.get_all_edges()
-    edges.sort(key=lambda edge: edge[1])
-    return edges
+    return sorted(edges, key=lambda edge: edge[1])
 
 
 def _is_vertices_in_different_components(connected_components, vertex1, vertex2):
