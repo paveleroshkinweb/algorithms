@@ -18,6 +18,8 @@ class Graph:
             self.add_vertex(vertex)
 
     def add_edge(self, vertex1, vertex2, cost=0):
+        if vertex1 == vertex2:
+            return
         self.adjacency_list[vertex1] = (self.adjacency_list.get(vertex1) or []) + [vertex2]
         self.adjacency_list[vertex2] = (self.adjacency_list.get(vertex2) or []) + [vertex1]
         self.costs[(vertex1, vertex2)] = cost
@@ -129,6 +131,9 @@ class Graph:
         copy_graph.costs = copy.deepcopy(self.costs)
         copy_graph.adjacency_list = copy.deepcopy(self.adjacency_list)
         return copy_graph
+
+    def __contains__(self, item):
+        return item in self.adjacency_list
 
     def is_empty(self):
         return all(map(lambda adjacency_list: adjacency_list == [], self.adjacency_list.values()))

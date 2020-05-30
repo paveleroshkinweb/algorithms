@@ -31,30 +31,22 @@ def is_bipartite(graph):
     return True, [parts[1], parts[0]]
 
 
-def prim(graph: Graph):
+def prim(graph):
     total_cost = 0
-    result_graph = Graph()
-    used_vertices = set()
-    while len(used_vertices) != len(graph.get_all_vertices()):
-        cost, min_edge = _find_min_edge_prim(graph, used_vertices)
-        used_vertices.update(min_edge)
-        result_graph.add_edge(min_edge[0], min_edge[1], cost)
-        total_cost += cost
-    return total_cost, result_graph
-
-
-def _find_min_edge_prim(graph, used_vertices):
-    min_edge_cost = sys.maxsize
-    min_edge = None
-    vertices = used_vertices if used_vertices != set() else graph.get_all_vertices()
-    for vertex in vertices:
-        for adjacent_vertex in graph.get_vertex_environment(vertex):
-            if adjacent_vertex not in used_vertices:
-                edge_cost = graph.get_edge_cost((vertex, adjacent_vertex))
-                if min_edge_cost > edge_cost:
-                    min_edge_cost = edge_cost
-                    min_edge = (vertex, adjacent_vertex)
-    return min_edge_cost, min_edge
+    min_cost_tree = Graph()
+    start_vertex = graph.get_start_vertex()
+    vertices_queue = [(0, (start_vertex, start_vertex))]
+    while vertices_queue:
+        cost, (vertex, orig_vertex) = heapq.heappop(vertices_queue)
+        if vertex not in min_cost_tree:
+            total_cost += cost
+            min_cost_tree.add_edge(vertex, orig_vertex)
+            for adjacent_vertex in graph.get_vertex_environment(vertex):
+                if adjacent_vertex not in min_cost_tree:
+                    heapq.heappush(vertices_queue,
+                                   (graph.get_edge_cost((vertex, adjacent_vertex)),
+                                   (adjacent_vertex, vertex)))
+    return total_cost, min_cost_tree
 
 
 def kruskal(graph):
