@@ -51,7 +51,7 @@ class Graph:
         for vertex in vertices:
             for adjacent_vertex in self.get_vertex_environment(vertex):
                 edge = (vertex, adjacent_vertex)
-                edges.append((edge, self.get_edge_cost(edge)))
+                edges.append((self.get_edge_cost(edge), edge))
         return edges
 
     def is_edge_in_graph(self, edge):
