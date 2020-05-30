@@ -1,6 +1,7 @@
 from graph_list import Graph
 import sys
 from copy import copy
+from union_find import UnionFind
 import heapq
 
 
@@ -58,28 +59,22 @@ def _find_min_edge_prim(graph, used_vertices):
 
 def kruskal(graph):
     total_cost = 0
-    result_graph = Graph()
-    sorted_edges = _sorted_edges(graph)
-    for edge in sorted_edges:
-        connected_components = result_graph.connected_components()
-        if result_graph.is_edge_in_graph(edge[0]) or \
-                not _is_vertices_in_different_components(connected_components, edge[0][0], edge[0][1]) and \
-                    result_graph.is_vertex_in_graph(edge[0][0]) and result_graph.is_vertex_in_graph(edge[0][1]):
-                        continue
-        total_cost += edge[1]
-        result_graph.add_edge(edge[0][0], edge[0][1], edge[1])
-    return total_cost, result_graph
+    min_cost_tree = Graph()
+    connected_components = UnionFind(graph.get_all_vertices())
+    edges_queue = graph.get_all_edges()
+    heapq.heapify(edges_queue)
+    while edges_queue:
+        cost, edge = heapq.heappop(edges_queue)
+        if is_valid_edge(edge, min_cost_tree, connected_components):
+            total_cost += cost
+            min_cost_tree.add_edge(edge[0], edge[1], cost)
+            connected_components.union(edge[0], edge[1])
+    return total_cost, min_cost_tree
 
 
-def _sorted_edges(graph):
-    edges = graph.get_all_edges()
-    return sorted(edges, key=lambda edge: edge[1])
-
-
-def _is_vertices_in_different_components(connected_components, vertex1, vertex2):
-    for component in connected_components:
-        if vertex1 in component and vertex2 in component:
-            return False
+def is_valid_edge(edge, graph, components):
+    if graph.is_edge_in_graph(edge) or components.find(edge[0]) == components.find(edge[1]):
+        return False
     return True
 
 
