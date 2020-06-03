@@ -26,7 +26,7 @@ class Graph:
 
     def add_edges(self, edges):
         for edge in edges:
-            self.add_edge(edge[0], edge[1])
+            self.add_edge(*edge)
 
     def get_edge_cost(self, edge):
         return self.costs.get(edge) or self.costs.get(edge[::-1])
@@ -126,6 +126,15 @@ class Graph:
             collected_vertices = set(itertools.chain.from_iterable(components))
         return components
 
+    def is_empty(self):
+        return all(map(lambda adjacency_list: adjacency_list == [], self.adjacency_list.values()))
+
+    def cycle_weight(self, cycle):
+        weight = 0
+        for i in range(len(cycle)-1):
+            weight += self.get_edge_cost((cycle[i], cycle[i+1]))
+        return weight + self.get_edge_cost((cycle[-1], cycle[0]))
+
     def __copy__(self):
         copy_graph = Graph()
         copy_graph.costs = copy.deepcopy(self.costs)
@@ -135,5 +144,5 @@ class Graph:
     def __contains__(self, item):
         return item in self.adjacency_list
 
-    def is_empty(self):
-        return all(map(lambda adjacency_list: adjacency_list == [], self.adjacency_list.values()))
+    def __len__(self):
+        return len(self.adjacency_list)
