@@ -242,6 +242,11 @@ class TestGraph(unittest.TestCase):
         self.assertIsNone(utils.djkstra(graph, 4, 3))
         self.assertEqual((2, [3, 5, 6]), utils.djkstra(graph, 3, 6))
 
+    def test_tsp(self):
+        graph = Graph()
+        graph.add_edges([(1, 2, 5), (1, 3, 2), (1, 4, 1), (1, 5, 7), (2, 3, 4), (2, 4, 3), (2, 5, 2), (3, 4, 3), (3, 5, 6), (4, 5, 4)])
+        self.assertEqual([1, 4, 5, 2, 3], utils.tsp(graph))
+
 
 if __name__ == 'main':
     unittest.main()

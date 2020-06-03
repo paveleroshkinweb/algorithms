@@ -199,9 +199,8 @@ def tsp(graph: Graph):
         return list(graph.get_all_vertices())
     best_cycle = list(graph.get_all_vertices())
     best_cycle_weight = graph.cycle_weight(best_cycle)
-    i = 0
+    i = 1
     improvement = True
-    print(graph.costs)
     while improvement and i < len(graph):
         improvement = False
         current_cycle = best_cycle[:]
