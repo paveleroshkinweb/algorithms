@@ -23,18 +23,19 @@ def naive_learning(input_data, weight, goal_prediction):
 
 
 def gradient_descent(input_data, weight, goal_prediction):
+    alpha = 0.1
     prediction = neural_network(input_data, weight)
     iterations = 1
     while (goal_prediction - prediction) ** 2 > .00001:
         iterations += 1
         direction_and_amount = (prediction - goal_prediction) * input_data
-        weight -= direction_and_amount
+        weight -= direction_and_amount * alpha
         prediction = neural_network(input_data, weight)
     return iterations, weight
 
 
 if __name__ == '__main__':
-    input_data = -0.5
+    input_data = 2
     weight = 0.5
     goal_prediction = 0.8
     iterations, new_weight = naive_learning(input_data, weight, goal_prediction)
