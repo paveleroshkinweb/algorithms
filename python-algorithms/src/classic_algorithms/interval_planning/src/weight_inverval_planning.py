@@ -29,21 +29,15 @@ def get_prev_intervals(intervals):
     return prev_intervals
 
 
-intervals1 = [
-    ((1, 2), 3),
-    ((1.5, 3), 4),
-    ((3.5, 5), 6),
-    ((4, 4.5), 2),
-    ((4.25, 6), 1),
-    ((4.5, 7), 5),
-    ((5.5, 9), 7),
-]
-
-intervals2 = [
-    ((1, 3), 7),
-    ((2, 4), 3),
-    ((2.5, 5), 10),
-    ((4, 10), 5)
-]
-
-print(weight_interval_planning(intervals1))
+def weight_interval_planning_iter(intervals):
+    prev_intervals = get_prev_intervals(intervals)
+    max_weight = 0
+    cache = {-1: 0}
+    for i, interval in enumerate(intervals):
+        weight = max(
+            interval[1] + cache[prev_intervals[i]],
+            cache[i-1]
+        )
+        cache[i] = weight
+        max_weight = max(weight, max_weight)
+    return max_weight
