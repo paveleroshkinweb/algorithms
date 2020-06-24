@@ -19,7 +19,7 @@ def grig(graph: Graph, start: int, end: int):
 
 
 def grig_line(number):
-    marks = {1: 1, 2: 1}
-    for n in range(3, number+1):
-        marks[n] = marks[n-1] + marks[n-2]
+    marks = [0, 1]
+    for n in range(2, number+1):
+        marks.append(marks[n-1] + marks[n-2])
     return marks[number]
