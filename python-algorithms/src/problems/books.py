@@ -4,10 +4,12 @@ def find_max_books(time, books):
     if sum_cache[0] <= time:
         return length
     max_books = binary_search(0, length-1, time, sum_cache)
-    for i in range(1, length):
+    i = 1
+    while i < len(books) - max_books:
         if sum_cache[i-1] - sum_cache[min(i+max_books, length)] >= \
                 sum_cache[i] - sum_cache[min(i+max_books+1, length)]:
             max_books = max(max_books, binary_search(i, length-1, time, sum_cache))
+        i += 1
     return max_books
 
 
