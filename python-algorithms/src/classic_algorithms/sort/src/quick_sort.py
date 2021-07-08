@@ -1,5 +1,7 @@
 def quick_sort(arr):
-    return do_sort(arr, 0, len(arr) - 1)
+    copy = arr[:]
+    do_sort(copy, 0, len(copy) - 1)
+    return copy
 
 
 def do_sort(arr, left, right):
