@@ -10,12 +10,12 @@ def do_sort(arr, left, right):
     pivot = arr[(left + right) // 2]
     left_pointer = left
     right_pointer = right
-    while left_pointer < right_pointer:
+    while left_pointer <= right_pointer:
         while arr[left_pointer] < pivot:
             left_pointer += 1
         while arr[right_pointer] > pivot:
             right_pointer -= 1
-        if left_pointer < right_pointer:
+        if left_pointer <= right_pointer:
             arr[left_pointer], arr[right_pointer] = arr[right_pointer], arr[left_pointer]
             left_pointer += 1
             right_pointer -= 1
