@@ -1,3 +1,9 @@
+from collections import namedtuple
+
+
+Node = namedtuple('Node', ['value', 'prev', 'next'])
+
+
 class LruDict:
 
     def __init__(self, maxsize=1000):
