@@ -28,8 +28,13 @@ class LruDict:
             old_node = self.__dict[self.__old_key]
             old_key = self.__old_key
             self.__old_key = old_node.next
-            self.__dict[self.__old_key] = self.__dict[self.__old_key]._replace(prev=None)
-            del self.__dict[old_key] 
+            if self.__old_key:
+                self.__dict[self.__old_key] = self.__dict[self.__old_key]._replace(prev=None)
+            del self.__dict[old_key]
+
+            if len(self.__dict) == 0:
+                self.__old_key = None
+                self.__last_updated_key = None
 
     def get(self, key):
         node = self.__dict.get(key)
@@ -43,6 +48,8 @@ class LruDict:
                 if node_prev is not None:
                     self.__dict[node_prev] = self.__dict[node_prev]._replace(next=node_next)
                     self.__dict[node_next] = self.__dict[node_next]._replace(prev=node_prev)
+                else:
+                    self.__dict[node_next] = self.__dict[node_next]._replace(prev=None)
 
                 if key == self.__old_key:
                     self.__old_key = node_next
