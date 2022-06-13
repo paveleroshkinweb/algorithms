@@ -1,22 +1,19 @@
-def transformSentence(sentence):
-    words = sentence.split(' ')
-    transformed = []
-    for word in words:
-        result = word[0]
-        for i in range(1, len(word)):
-            lower_next = word[i].lower()
-            lower_prev = word[i - 1].lower()
-            if lower_next == lower_prev:
-                result += word[i]
-            elif lower_next < lower_prev:
-                result += word[i].upper()
-            else:
-                result += word[i].lower()
-        transformed.append(result)
-    return " ".join(transformed)
+from heapq import heapify, heappush, heappop
 
-
-if __name__ == '__main__':
-    sentence = input()
-    result = transformSentence(sentence)
-    print(result)
+def transformation(numbers):
+    counter = {}
+    for n in numbers:
+        counter[n] = counter.get(n, 0) + 1
+    items = [v * -1 for v in counter.values()]
+    heapify(items)
+    while len(items) > 1:
+        peek1, peek2 = heappop(items), heappop(items)
+        peek1 += 1
+        peek2 += 1
+        if peek1 != 0:
+            heappush(items, peek1)
+        if peek2 != 0:
+            heappush(items, peek2)
+    if len(items) > 0:
+        return -items[0]
+    return 0
