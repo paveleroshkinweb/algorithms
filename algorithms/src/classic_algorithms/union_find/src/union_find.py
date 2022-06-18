@@ -39,5 +39,31 @@ class UnionFind2:
 
 class UnionFind3:
 
-    def __init__(self, elements):
-        self.parents = {key: (key, 1) for key in elements}
+    def __init__(self, nodes):
+        self.parents = {node: node for node in nodes}
+        self.components_count = len(nodes)
+        self.sizes = {node: 1 for node in nodes}
+
+    def union(self, node1, node2):
+        parent1, parent2 = self.find(node1), self.find(node2)
+        size1, size2 = self.sizes[parent1], self.sizes[parent2]
+        self.components_count -= 1
+        if size1 > size2:
+            self.parents[parent2] = parent1
+            return parent1
+        else:
+            self.parents[parent1] = parent2
+            return parent2
+        
+
+    def find(self, node):
+        while self.parents[node] != node:
+            self.parents[node] = self.parents[self.parents[node]] 
+            node = self.parents[node]
+        return node
+    
+    def connected(self, node1, node2):
+        return self.find(node1) == self.find(node2)
+    
+    def count(self):
+        return self.components_count
