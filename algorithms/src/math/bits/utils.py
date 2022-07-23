@@ -6,26 +6,30 @@ def is_divisible_by_power_2(n, power):
     return (n & checker) == 0
 
 
-def set_bit_1(n, position):
-    return n | 2 ** position
+def set_last_0(n):
+    return n & (n-1)
 
 
-def clear_bit_1(n, position):
-    return n & ~(2 ** (position))
+def set_last_1(n):
+    return n | (n+1)
 
 
-def read_bit_1(n, position):
-    return n & (2 ** position) >> position
+def remove_trailing_1(n):
+    return n & (n+1)
 
 
-def set_bit_2(n, position):
+def remove_trailing_0(n):
+    return n | (n-1)
+
+
+def set_bit(n, position):
     return n | (1 << position)
 
 
-def clear_bit_2(n, position):
+def clear_bit(n, position):
     return n & ~(1 << position)
 
 
-def read_bit_2(n, position):
+def read_bit(n, position):
     return n & (1 << position) >> position
 
