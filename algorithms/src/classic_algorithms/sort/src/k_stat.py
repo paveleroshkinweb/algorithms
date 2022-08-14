@@ -39,24 +39,20 @@ def k_stat3(arr, position):
                 arr[i], arr[j] = arr[j], arr[i]
                 i += 1
                 j -= 1
-        if arr[i] > pivot:
-            arr[i], arr[right] = arr[right], arr[i]
-            return i 
-        return j
-    
-    def k_stat3_helper(left, right):
-        if left == right:
-            return position
-        idx = partition(left, right)
-        if left + idx == position:
-            return position
-        elif left + idx < position:
-            return left + k_stat3_helper(idx+1, right)
+        if arr[i] >= pivot:
+             arr[i], arr[right] = arr[right], arr[i]
+             return i
         else:
-            return k_stat3_helper(left, idx)
-    
-    pos = k_stat3_helper(0, len(arr)-1)
-    return arr[pos]
+            arr[i+1], arr[right] = arr[right], arr[i+1]
+            return i+1
 
+    def k_stat3_helper(left, right):
+        idx = partition(left, right)
+        if idx == position:
+            return arr[position]
+        elif idx > position:
+            return k_stat3_helper(left, idx-1)
+        else:
+            return k_stat3_helper(idx + 1, right)
 
-print(k_stat3([1, 0, 3, 2], 2))
+    return k_stat3_helper(0, len(arr)-1)
