@@ -19,7 +19,7 @@ def getParity3(n):
     parity_precalculated = [0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4]
     parity = 0
     while n:
-        parity += parity_precalculated[n & 0b1111]
+        parity += parity_precalculated[n & 0xf]
         n >>= 4
     return parity % 2
 
