@@ -6,22 +6,7 @@ def min_score_to_win(score1, current_score2, is_first_game_guest):
     if diff < 0:
         return 0
 
-    if diff == 0:
-
-        if is_first_game_guest:
-
-            if score1[0] > current_score2[1]:
-                return 0
-
-            return 1
-
-        # Currently playing guest
-        if current_score2[0] > score1[1]:
-            return 0
-        return 1
-
-    # Team 1 have less points
-
+    # Team 1 have less or equal points
     if is_first_game_guest:
         # Team 1 won first game as guest
         if score1[0] > current_score2[1]:
