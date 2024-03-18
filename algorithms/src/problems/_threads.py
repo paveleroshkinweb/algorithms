@@ -2,10 +2,10 @@ def find_min_length(lengths):
     max_element = max(lengths)
     subsum = sum(lengths)
 
-    # if subsum == max_element * 2:
-    #     return max_element * 2
+    if subsum >= max_element * 2:
+        return subsum
 
-    # return 2 * max_element - subsum
+    return 2 * max_element - subsum
 
 
 if __name__ == '__main__':
