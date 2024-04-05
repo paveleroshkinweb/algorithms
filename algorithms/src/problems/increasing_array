@@ -1,0 +1,21 @@
+def find_step_numbers(numbers):
+    n_steps = 0
+    for i in range(1, len(numbers)):
+        prev = numbers[i-1]
+        curr = numbers[i]
+
+        if curr >= prev:
+            continue
+        
+        n_steps += prev - curr
+        numbers[i] = prev
+
+    return n_steps
+
+
+if __name__ == '__main__':
+    _ = input()
+    
+    numbers = list(map(int, input().split()))
+    n_steps = find_step_numbers(numbers)
+    print(n_steps)
