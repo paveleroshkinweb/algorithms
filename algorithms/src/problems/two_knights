@@ -1,0 +1,24 @@
+def find_ways(n):
+    ways = [0, 6]
+    prev_line = 0
+
+    if n <= 2:
+        return ways[:n]
+
+    for i in range(3, n+1):
+        prev_line += 4
+        prev_ways = ways[i-2]
+        new_line_ways = ((2*i - 1) * (2*i - 2) / 2) - 2
+        new_line_ways2 = ((i-1) ** 2) * (2*i - 1) - ((prev_line) * 2 - 2)
+
+        new_ways = prev_ways + new_line_ways + new_line_ways2
+
+        ways.append(int(new_ways))
+
+    return ways
+
+
+if __name__ == '__main__':
+    n = int(input())
+    ways_knights = find_ways(n)
+    print("\n".join(map(str, ways_knights)))
