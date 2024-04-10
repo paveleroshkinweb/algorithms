@@ -1,0 +1,40 @@
+def find_equal_sets(n):
+    target_sum = n * (n+1) // 2
+
+    if target_sum & 1 == 1:
+        return
+
+    target_subsum = target_sum // 2
+
+    current_sum = 0
+    last_used = n + 1
+    used_numbers = set()
+
+    while current_sum != target_subsum:
+        diff = target_subsum - current_sum
+
+        if diff <= n and diff not in used_numbers:
+            used_numbers.add(diff)
+            break
+        else:
+            last_used -= 1
+            current_sum += last_used
+            used_numbers.add(last_used)
+
+    return used_numbers, set(range(1, n+1)) - used_numbers
+
+
+if __name__ == '__main__':
+    n = int(input())
+    sets = find_equal_sets(n)
+
+    if not sets:
+        print("NO")
+    else:
+        print("YES")
+
+        print(len(sets[0]))
+        print(*map(str, sets[0]))
+
+        print(len(sets[1]))
+        print(*map(str, sets[1]))
