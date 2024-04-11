@@ -1,0 +1,22 @@
+def find_trailing_zeros_count(n):
+    numbers_of_2 = 0
+    number_of_5 = 0
+
+    current_n = 2
+
+    while current_n <= n:
+        numbers_of_2 += n // current_n
+        current_n *= 2
+
+    current_n = 5
+    while current_n <= n:
+        number_of_5 += n // current_n
+        current_n *= 5        
+
+    return min(numbers_of_2, number_of_5)
+
+
+if __name__ == '__main__':
+    n = int(input())
+    zeros_count = find_trailing_zeros_count(n)
+    print(zeros_count)
