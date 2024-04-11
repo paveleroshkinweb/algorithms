@@ -1,0 +1,17 @@
+def can_efficiently_empty_piles(a, b):
+    t_a = min(a, b)
+    t_b = max(a, b)
+    t = (2*t_a - t_b)
+    return t >= 0 and t % 3 == 0
+
+
+if __name__ == '__main__':
+    results = []
+    for _ in range(int(input())):
+        a, b = tuple(map(int, input().split()))
+        is_way = can_efficiently_empty_piles(a, b)
+        if is_way:
+            results.append("YES")
+        else:
+            results.append("NO")
+    print("\n".join(results))
