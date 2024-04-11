@@ -1,0 +1,39 @@
+from collections import Counter
+
+
+def find_polyndrome(string):
+    counter = Counter(string)
+
+    odd_char = None
+
+    for char, count in counter.items():
+        if count & 1 == 1:
+
+            if odd_char is not None:
+                return
+            odd_char = char
+    polyndrome = [None] * len(string)
+
+    start_idx = 0
+    end_idx = len(string) - 1
+
+    if odd_char is not None:
+        polyndrome[len(string) // 2] = odd_char
+        counter[odd_char] -= 1
+ 
+    for char, count in counter.items():
+        for _ in range(0, (count // 2)): 
+            polyndrome[start_idx] = char
+            polyndrome[end_idx] = char
+            start_idx += 1
+            end_idx -= 1 
+    return "".join(polyndrome)
+
+
+if __name__ == '__main__':
+    input_str = input()
+    polyndrome = find_polyndrome(input_str)
+    if polyndrome is None:
+        print("NO SOLUTION")
+    else:
+        print(polyndrome)
