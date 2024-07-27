@@ -1,6 +1,3 @@
-import math
-
-
 # find a solution for equation if it's possible with binary search
 def solve(target, *, function, iterations, delta=0.001):
     left = 0
